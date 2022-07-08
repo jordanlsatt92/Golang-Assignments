@@ -1,5 +1,26 @@
 package main
 
+// Jordan Satterfield
+
+/*
+Description:
+Implement a function for each of the following bullets. Each function will take as an input an array of 100 integers. Do not use the sort package or any built-in function (like min, max, etc.).
+
+    Compute the max of an array of int
+    Compute the index of the max of an array of int
+    Compute the min of an array of int
+    Compute the index of the min of an array of int
+    Sort an array of int in descending order and return the new sorted array in a separate array.
+    Sort an array of int in ascending order and return the new sorted array in a separate array.
+    Compute the mean of an array
+    Compute the median of an array
+    Identify all positive numbers in the array and return the numbers in a slice
+    Identify all negative numbers in the array and return the numbers in a slice
+    Compute the longest sequence of sorted numbers (in descending or ascending order) in the array and return in a new array
+        Example: input: [1 45 67 87 6 57 0]
+        Output: [1 45 67 87]
+    Remove duplicates from an array of ints and return the unique elements in a slice
+*/
 import (
 	"fmt"
 	"m6DataCollActivity2Module/dependencies"
