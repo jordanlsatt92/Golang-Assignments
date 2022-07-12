@@ -13,22 +13,27 @@ type BankAccount struct {
 	AccountType  string
 }
 
+// Withdraws the float "value" from the account
 func (a *BankAccount) Withdraw(value float64) {
 	if value > a.Balance{
 		fmt.Println("ERROR\nYou cannot withdraw more than you have in the account\nERROR")
+		return
 	}else {
 		a.Balance -= value
 	}
 }
 
+// Deposits the float "value" into the account
 func (a *BankAccount) Deposit(value float64) {
 	if value < 0{
 		fmt.Println("ERROR\nyou cannot deposit a negative ammount\nERROR")
+		return
 	}else{
 		a.Balance += value
 	}
 }
 
+// Applies the interest specified to each account based on the type of account
 func (a *BankAccount) ApplyInterest(){
 	// Individual Accounts
 	if strings.ToLower(a.AccountOwner.EntityType) == "individual"{
@@ -56,12 +61,15 @@ func (a *BankAccount) ApplyInterest(){
 	}
 }
 
+// Wires money from the source accound to the Target account
 func (a BankAccount) Wire(source, target *BankAccount, wireAmount float64) {
 	if a.Balance < wireAmount{
 		fmt.Println("ERROR\nyou cannot wire more money than you have in the account\nERROR")
+		return
 	}else{
 		target.Balance += wireAmount
 		source.Balance -= wireAmount
 
 	}
 }
+

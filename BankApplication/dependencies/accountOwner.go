@@ -6,6 +6,7 @@ type Owner struct {
 	EntityType string
 }
 
+// Changes the Owner's Address
 func (o *Owner) ChangeAddress(newAddress string) {
 	o.Address = newAddress
 }

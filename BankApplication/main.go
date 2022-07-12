@@ -9,13 +9,19 @@ import (
 
 func main(){
 	aOwner:= dependencies.Owner{"1","21 Liberty Street","Individual"}
-	bAccount1 := dependencies.BankAccount{"1", aOwner, 300.00, 0.0125,"Checking"}
-	bAccount2 := dependencies.BankAccount{"2", aOwner, 1000.00, 0.0125,"Saving"}
-	bAccount3 := dependencies.BankAccount{"3", aOwner, 5000.00, 0.0125,"Investment"}
 	wallet1 := dependencies.Wallet{ID: "W1", WalletOwner: aOwner}
-	wallet1.AddAccount(&bAccount1)
-	wallet1.AddAccount(&bAccount2)
-	wallet1.AddAccount(&bAccount3)
+	wallet1.CreateAccount("saving", 1000)
+	wallet1.CreateAccount("checking", 500)
+	wallet1.CreateAccount("investment", 5000)
+
+	bOwner:= dependencies.Owner{"1","21 Liberty Street","Individual"}
+	wallet2 := dependencies.Wallet{ID: "W1", WalletOwner: bOwner}
+	wallet2.CreateAccount("saving", 20000)
+	wallet2.CreateAccount("checking", 7500)
+	wallet2.CreateAccount("investment", 50000)
+	// businessOwner:= dependencies.Owner{"2", "33 Business St", "Business"}
+	// businessWallet:= dependencies.Wallet{ID:"W2", WalletOwner: businessOwner}
+	// businessWallet.A
 	// fmt.Println(bAccount1)
 	// fmt.Println("Withdrawel")
 	// bAccount1.Withdraw(20)
@@ -40,14 +46,14 @@ func main(){
 	var input string
 	var amount float64
 
-	fmt.Println("The following program allows you to interact with your accounts.")
+	fmt.Println("\n\nThe following program allows you to interact with your accounts.")
 	fmt.Println("Type \"exit\" to quit.")
 	for input != "exit"{
 		
-		fmt.Println("Your Wallet")
+		fmt.Println("\n\nYour Wallet")
 		wallet1.DisplayAccounts()
 
-		fmt.Print("What would you like to do? Type \"deposit\", \"withdraw\", or \"wire\": ")
+		fmt.Print("What would you like to do? Type \"new\" to create new account,\"deposit\", \"withdraw\", or \"wire\": ")
 		fmt.Scan(&input)
 		if strings.ToLower(input) == "exit"{
 			os.Exit(0)
@@ -66,15 +72,37 @@ func main(){
 			fmt.Scan(&amount)
 			account.Deposit(amount)			
 		}else if strings.ToLower(input) == "wire"{
-			fmt.Print("Please enter the source account number: ")
+			fmt.Print("Would you like to wire to an account outside of your wallet? Type \"yes\" or \"no\": ")
 			fmt.Scan(&input)
-			acc1:=wallet1.FindAccountByAccountNum(input)
-			fmt.Print("Please enter the target account number: ")
+			if strings.ToLower(input) == "no"{
+				fmt.Print("Please enter the source account number: ")
+				fmt.Scan(&input)
+				acc1:=wallet1.FindAccountByAccountNum(input)
+				fmt.Print("Please enter the target account number: ")
+				fmt.Scan(&input)
+				acc2:=wallet1.FindAccountByAccountNum(input)
+				fmt.Print("Enter the amount you would like to wire: ")
+				fmt.Scan(&amount)
+				acc1.Wire(acc1,acc2,amount)
+			}else if strings.ToLower(input) == "yes"{
+				fmt.Println("Here are the accounts you can wire to:")
+				wallet2.DisplayAccounts()
+				fmt.Print("Please enter the source account number from your wallet: ")
+				fmt.Scan(&input)
+				acc1:=wallet1.FindAccountByAccountNum(input)
+				fmt.Print("Please enter the target account number: ")
+				fmt.Scan(&input)
+				acc2:=wallet2.FindAccountByAccountNum(input)
+				fmt.Print("Enter the amount you would like to wire: ")
+				fmt.Scan(&amount)
+				wallet1.Wire(acc1,acc2,amount)
+			}
+		}else if strings.ToLower(input) == "new"{
+			fmt.Print("What type of account do you want to create? Type \"checking\", \"saving\", or \"investment\": ")
 			fmt.Scan(&input)
-			acc2:=wallet1.FindAccountByAccountNum(input)
-			fmt.Print("Enter the amount you would like to wire: ")
+			fmt.Print("Please enter the amount of the initial deposit (float): ")
 			fmt.Scan(&amount)
-			acc1.Wire(acc1,acc2,amount)
+			wallet1.CreateAccount(input, amount)
 		}
 
 
