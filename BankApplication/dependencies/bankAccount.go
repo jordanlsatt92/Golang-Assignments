@@ -13,7 +13,10 @@ type BankAccount struct {
 	AccountType  string
 }
 
-// Withdraws the float "value" from the account
+/*
+@description: Function that withdraws money from the bank account
+@param value (float): The value to be withdrawn
+*/
 func (a *BankAccount) Withdraw(value float64) {
 	if value > a.Balance{
 		fmt.Println("ERROR\nYou cannot withdraw more than you have in the account\nERROR")
@@ -23,7 +26,10 @@ func (a *BankAccount) Withdraw(value float64) {
 	}
 }
 
-// Deposits the float "value" into the account
+/*
+@description: Function that deposits an amount into the account
+@param value (float): the amount to be added to the account.
+*/
 func (a *BankAccount) Deposit(value float64) {
 	if value < 0{
 		fmt.Println("ERROR\nyou cannot deposit a negative ammount\nERROR")
@@ -33,7 +39,10 @@ func (a *BankAccount) Deposit(value float64) {
 	}
 }
 
-// Applies the interest specified to each account based on the type of account
+/*
+@description: Function that applies the interest to the bank account depending on whether
+it is owned by a business or individual and the account type (checking,savings,investment)
+*/
 func (a *BankAccount) ApplyInterest(){
 	// Individual Accounts
 	if strings.ToLower(a.AccountOwner.EntityType) == "individual"{
@@ -61,7 +70,13 @@ func (a *BankAccount) ApplyInterest(){
 	}
 }
 
-// Wires money from the source accound to the Target account
+/*
+@description: Function that wires the wireAmount param from the source account to the target account. If
+the funds are not present in the source account, the function prints an error message.
+@param source (*BankAccount): the account from which the funds will come
+@param target (*BankAccount): the account to which the funds will go
+@param wireamount: the dollar/float amount of money to be wired.
+*/
 func (a BankAccount) Wire(source, target *BankAccount, wireAmount float64) {
 	if a.Balance < wireAmount{
 		fmt.Println("ERROR\nyou cannot wire more money than you have in the account\nERROR")

@@ -13,7 +13,11 @@ type Wallet struct {
 	WalletOwner Owner
 }
 
-// Finds an account by the account number and returns a pointer to that account
+/*
+@description: Function that finds an account in the wallet by the account number
+@num (string): The account number of the account to be returned.
+@return *BankAccount: A pointer to the bank account containing the bank account number.
+*/
 func (w *Wallet) FindAccountByAccountNum(num string) *BankAccount{
 	for _,account := range w.Accounts{
 		if account.AccountNum == num{
@@ -23,11 +27,17 @@ func (w *Wallet) FindAccountByAccountNum(num string) *BankAccount{
 	return nil
 }
 
-// Adds an account to the wallet
+/*
+@description: Adds an account to the wallet
+@param account (type BankAccount): The bank account to be added to the wallet.
+*/
 func (w *Wallet) AddAccount(account *BankAccount) {
 	w.Accounts = append(w.Accounts, account)
 }
 
+/*
+@description: Function that returns a function to generate account numbers for bank accounts
+*/
 func GenerateAccountNumber() func() string {
 	number:=1
 	return func() string{
@@ -37,12 +47,14 @@ func GenerateAccountNumber() func() string {
 	}
 }
 
+//Closure function to generate account numbers
 var GenerateAccountNumberClosure func()string = GenerateAccountNumber()
 
-// Creates an account and adds it to the wallet
-// accountType is "checking", "saving", or "investment"
-// Initial amount is the money that will be in the account
-// The entity type is based on the entity type of the wallet owner
+/*
+@desciption: Creates an account and adds it to the wallet
+@param accountType (string): the account type to be created (checking,savings,investment)
+@param initialAmount (float): the initial amount that will be deposited when the account is created.
+*/
 func (w *Wallet) CreateAccount(accountType string, initialAmount float64) {
 	var interest float64
 	if strings.ToLower(w.WalletOwner.EntityType) == "business"{
@@ -67,7 +79,9 @@ func (w *Wallet) CreateAccount(accountType string, initialAmount float64) {
 	w.Accounts = append(w.Accounts, &newAccount)
 }
 
-// Displays the accounts in the order specified
+/*
+@description: Function that displays each accounts information that is in the wallet
+*/
 func (w *Wallet) DisplayAccounts() {
 	accounts := make([]*BankAccount, len(w.Accounts))
 	accounts = w.Accounts
@@ -81,7 +95,14 @@ func (w *Wallet) DisplayAccounts() {
 	
 }
 
-// Returns the total balance of all accounts
+/*
+@description: Function that wires the wireAmount param from the source account to the target account. If
+the funds are not present in the source account, the function calls the findAccountsWithFunds()method 
+and displays the returned value
+@param source: the account from which the funds will come
+@param target: the account to which the funds will go
+@param wireamount: the dollar/float amount of money to be wired.
+*/
 func (w *Wallet) Balance() float64{
 	var totalBal float64
 	for _,bal := range w.Accounts{
@@ -90,7 +111,14 @@ func (w *Wallet) Balance() float64{
 	return totalBal
 }
 
-// Wires money from the source account to the target account
+/*
+@description: Function that wires the wireAmount param from the source account to the target account. If
+the funds are not present in the source account, the function calls the findAccountsWithFunds()method 
+and displays the returned value
+@param source: the account from which the funds will come
+@param target: the account to which the funds will go
+@param wireamount: the dollar/float amount of money to be wired.
+*/
 func (w *Wallet) Wire(source, target *BankAccount, wireAmount float64) {
 	if source.Balance < wireAmount{
 		fmt.Printf("You do not have enough money in the source account to wire %.2f.\n", wireAmount)
@@ -108,7 +136,12 @@ func (w *Wallet) Wire(source, target *BankAccount, wireAmount float64) {
 		source.Balance -= wireAmount
 	}
 }
-
+/*
+@description: Function that searches the wallet and returns a wallet containing accounts that 
+have at least as much as the amount parameter
+@param amount: a dollar/float value
+@return Wallet: a wallet that has all of the accounts that have at least as much as the amount parameter
+*/
 func (w *Wallet) findAccountsWithFunds(amount float64) Wallet{
 	var newWallet Wallet = Wallet{ID: "", Accounts:  make([]*BankAccount, 0)}
 	for _,account := range w.Accounts{
