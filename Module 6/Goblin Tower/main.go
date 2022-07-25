@@ -35,7 +35,12 @@ func main(){
 						hero.Attack(&goblin)
 						fmt.Println("You attacked!")
 					}else if input == "2"{
-						hero.UsePotion()
+						err:= hero.UsePotion()
+						if err != nil{
+							fmt.Println(err)
+							hero.Attack(&goblin)
+							fmt.Println("You attacked!")
+						}
 					}else{
 						continue
 					}
@@ -59,10 +64,28 @@ func main(){
 						break
 					}else if input == "no"{
 						keepPlaying = false
+						fmt.Println("Game over")
+						fmt.Printf("Current level: %v\n", hero.Level)
+						fmt.Printf("Goblins slain: %v\n", hero.GoblinsSlain)
 						break
 					}
 				}
 				
+			}
+		}
+		fmt.Printf("You made it through level %v. You have slain %v goblins\n", hero.Level, hero.GoblinsSlain)
+		for {
+			fmt.Print("Would you like to buy a health potion? Enter yes or no:")
+			time.Sleep(time.Second*2)
+			fmt.Scan(&input)
+			if input == "yes"{
+				err:=hero.PurchasePotion()
+				if err != nil{
+					fmt.Println("You have the maximum amount of potions or do not have enough gold. You cannot purchase any potions.")
+					break
+				}
+			}else if input == "no"{
+				break
 			}
 		}
 	}

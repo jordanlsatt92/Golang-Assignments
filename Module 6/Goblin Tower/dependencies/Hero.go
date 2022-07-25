@@ -1,6 +1,7 @@
 package dependencies
 
 import (
+	"errors"
 	"fmt"
 	"math/rand"
 	"time"
@@ -65,4 +66,42 @@ func (h *Hero) Attack(goblin *Goblin){
 	rand.Seed(time.Now().UnixNano())
 	goblinDefence:= rand.Intn(goblin.DefensePower+1-1)+1
 	goblin.Health -= h.AttackPower - goblinDefence
+}
+
+func (h *Hero) UsePotion() error{
+	for i:=0;i < len(h.Potions); i++{
+		if h.Potions[i] == 2{
+			h.CurrentHealth += h.Potions[i]
+			h.Potions[i] = 0
+			return nil
+		}
+	}
+	return errors.New("You do not have any potions. You must attack.")
+}
+
+func (h *Hero) checkPotionCount() error{
+	for i:=0; i < len(h.Potions); i++{
+		if h.Potions[i] == 0{
+			return nil
+		}
+	}
+	return errors.New("max potions")
+}
+
+func (h *Hero) PurchasePotion() error{
+	err:= h.checkPotionCount()
+	if err != nil{
+		return errors.New("You have the maximun amount of potions")
+	}
+	for i:=0; i < len(h.Potions); i++{
+		if h.Potions[i] == 0 && h.Gold >= 2{
+			h.Potions[i] = 2
+			h.Gold -= 2
+			return nil
+		}
+		if h.Gold < 2{
+			return errors.New("You do not have enough gold to purchase a health potion.")
+		}
+	}
+	return nil
 }
