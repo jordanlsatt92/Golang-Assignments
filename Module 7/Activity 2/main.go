@@ -12,6 +12,7 @@ import (
 
 var wg sync.WaitGroup
 
+// Reverses the input string  and sends it to the channel
 func reverse(s string, ch chan string){
 	reversed:=" "
 	for i:=len(s)-1; i >= 0; i--{
@@ -21,6 +22,7 @@ func reverse(s string, ch chan string){
 	wg.Done()
 }
 
+//Computes the number of words in the string and sends the number to the channel
 func wordCount(s string, ch chan int){
 	count:=1
 	i:=0
