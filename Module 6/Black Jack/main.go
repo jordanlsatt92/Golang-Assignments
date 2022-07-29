@@ -43,6 +43,10 @@ func main(){
 		gameEnded:= false
 		var input string
 		for !gameEnded{
+			hands[playerNumber].IsBust()
+			if hands[playerNumber].Busted == true{
+				fmt.Println(fmt.Println("Player", playerNumber,": you have busted. Play again next round."))
+			}
 			fmt.Print("\nYour Hand: ")
 			hands[playerNumber].DisplayCurrentPlayerHand()
 			fmt.Println("Other players hands: ")

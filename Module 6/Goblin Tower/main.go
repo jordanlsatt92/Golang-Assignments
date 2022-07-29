@@ -10,9 +10,10 @@ import (
 
 func main(){
 	
-	hero:=dependencies.GenerateCurrentHero(3,3,2)
+	hero:=dependencies.GenerateHero()
 	fmt.Println("Welcome to Goblin Tower. Try not to die, Hero.")
 	keepPlaying:=true
+	heroIsDead:=false
 	totalSteps:=0
 	var input string
 	for keepPlaying{
@@ -27,7 +28,8 @@ func main(){
 				for goblin.Health > 0 && hero.CurrentHealth > 0{
 					fmt.Println("\nYour Stats:")
 					hero.DisplayStats()
-					fmt.Println(goblin)
+					fmt.Println("Goblin Stats:")
+					goblin.DisplayStats()
 					fmt.Println("What would you like to do? Type the number of the choice below: ")
 					fmt.Println("1. Attack\n2. Take potion")
 					fmt.Scan(&input)
@@ -57,10 +59,12 @@ func main(){
 					hero.GoblinsSlain ++
 				}else{
 					fmt.Println("You've been defeated.")
+					heroIsDead = true
 					fmt.Print("Would you like to play again? Enter yes or no:")
 					fmt.Scan(&input)
 					if input == "yes"{
-						hero = dependencies.GenerateHero()
+						currentGold := hero.Gold
+						hero = dependencies.GenerateCurrentHero(currentGold)
 						break
 					}else if input == "no"{
 						keepPlaying = false
@@ -73,20 +77,23 @@ func main(){
 				
 			}
 		}
-		fmt.Printf("You made it through level %v. You have slain %v goblins\n", hero.Level, hero.GoblinsSlain)
-		for {
-			fmt.Print("Would you like to buy a health potion? Enter yes or no:")
-			time.Sleep(time.Second*2)
-			fmt.Scan(&input)
-			if input == "yes"{
-				err:=hero.PurchasePotion()
-				if err != nil{
-					fmt.Println("You have the maximum amount of potions or do not have enough gold. You cannot purchase any potions.")
+		if !heroIsDead{
+			fmt.Printf("You made it through level %v. You have slain %v goblins\n", hero.Level, hero.GoblinsSlain)
+			for {
+				fmt.Print("Would you like to buy a health potion? Enter yes or no:")
+				time.Sleep(time.Second*2)
+				fmt.Scan(&input)
+				if input == "yes"{
+					err:=hero.PurchasePotion()
+					if err != nil{
+						fmt.Println("You have the maximum amount of potions or do not have enough gold. You cannot purchase any potions.")
+						break
+					}
+				}else if input == "no"{
 					break
 				}
-			}else if input == "no"{
-				break
 			}
 		}
+		heroIsDead = false
 	}
 }

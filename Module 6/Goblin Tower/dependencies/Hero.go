@@ -34,13 +34,13 @@ func GenerateHero() Hero{
 /*
 Generates a Hero struct with the gold from the previous level
 */
-func GenerateCurrentHero(gold, goblinsSlain,level int) Hero{
+func GenerateCurrentHero(gold int) Hero{
 	rand.Seed(time.Now().UnixNano())
 	health:= rand.Intn(30-20+1)+20
 	power:= rand.Intn(3-1+1)+1
 	defence:= rand.Intn(5-1+1)+1
 	potions:= [5]int{2,2,2,2,2}
-	newHero:= Hero{health,health,power,defence,potions,gold,goblinsSlain,level}
+	newHero:= Hero{health,health,power,defence,potions,gold,0,0}
 	return newHero
 }
 
