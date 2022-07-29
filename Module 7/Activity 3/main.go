@@ -12,6 +12,7 @@ import (
 
 var wg sync.WaitGroup
 
+//changes the id number of the employee
 func changeIdNumber(employees <-chan dependencies.Employee, changes chan<- dependencies.Employee){
 	defer wg.Done()
 	for emp := range employees{

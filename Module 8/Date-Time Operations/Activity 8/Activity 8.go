@@ -1,5 +1,10 @@
 package main
 
+/*
+Write a program that prompts the user for two different dates, computes the number of days between those dates, and displays the results.
+
+The order in which the user enters the dates should not affect the results.
+*/
 import (
 	"fmt"
 	"math"

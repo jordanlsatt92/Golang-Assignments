@@ -1,5 +1,17 @@
 package main
 
+/*
+Write a program to display the following:
+
+    Current date and time
+    Current year
+    Current month
+    Week number of the year
+    Weekday of the week
+    Day of the year
+    Day of the month
+    Day of the week
+*/
 import (
 	"fmt"
 	"time"

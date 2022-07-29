@@ -10,6 +10,8 @@ import (
 var wg sync.WaitGroup
 var mutex sync.Mutex
 
+
+// Runs two go routines, one is sending numbers 1-100, and the other is sending 100-1. The numbers then get printed.
 func main(){
 
 	ch1:= make(chan string)

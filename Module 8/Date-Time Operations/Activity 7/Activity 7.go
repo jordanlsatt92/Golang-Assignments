@@ -1,5 +1,8 @@
 package main
 
+/*
+Write a program that adds five seconds to the current time and displays the result.
+*/
 import (
 	"fmt"
 	"time"

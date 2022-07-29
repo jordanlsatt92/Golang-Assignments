@@ -1,5 +1,8 @@
 package main
 
+/*
+Write a program that prints the date for the next five days, starting from today.
+*/
 import (
 	"fmt"
 	"time"

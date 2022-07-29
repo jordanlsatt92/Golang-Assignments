@@ -1,5 +1,8 @@
 package main
 
+/*
+Write a program that prints the dates for yesterday, today, and tomorrow.
+*/
 import (
 	"fmt"
 	"time"

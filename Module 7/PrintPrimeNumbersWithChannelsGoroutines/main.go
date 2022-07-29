@@ -4,6 +4,7 @@ import (
 	"fmt"
 )
 
+// routine that loops throught 100 numbers and sends each number to the channel
 func increment() chan int{
 	out:=make(chan int)
 
@@ -18,7 +19,8 @@ func increment() chan int{
 	return out
 }
 
-func primPrinter(c chan int) chan int{
+// Receives numbers from a channel and the finds if it is prime then sends it
+func primePrinter(c chan int) chan int{
 	out:=make(chan int)
 	go func(){
 		for n:=range c{
@@ -43,7 +45,7 @@ func primPrinter(c chan int) chan int{
 
 func main(){
 	n1:=increment()
-	p1:=primPrinter(n1)
+	p1:=primePrinter(n1)
 	for n:= range p1{
 		fmt.Println(n,"is prime.")
 	}

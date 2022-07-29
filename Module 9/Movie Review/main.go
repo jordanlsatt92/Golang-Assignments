@@ -12,6 +12,9 @@ type WordScore struct{
 	Word string
 	Score int
 }
+
+// Takes 3 files 1 file of good words and rankings, and a file of bad words. 
+// Computes the total number of good and bad words, then calculates the % of good.
 func main(){
 	var bad, good int
 

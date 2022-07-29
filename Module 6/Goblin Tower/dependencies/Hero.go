@@ -62,12 +62,14 @@ func (h *Hero) NumberOfPotions() int{
 	return count
 }
 
+// Attacks the goblin and decreases goblins health
 func (h *Hero) Attack(goblin *Goblin){
 	rand.Seed(time.Now().UnixNano())
 	goblinDefence:= rand.Intn(goblin.DefensePower+1-1)+1
 	goblin.Health -= h.AttackPower - goblinDefence
 }
 
+// Hero uses the potion and increases hero's health
 func (h *Hero) UsePotion() error{
 	for i:=0;i < len(h.Potions); i++{
 		if h.Potions[i] == 2{
@@ -79,6 +81,7 @@ func (h *Hero) UsePotion() error{
 	return errors.New("You do not have any potions. You must attack.")
 }
 
+// Checks if the hero has the max number of potions
 func (h *Hero) checkPotionCount() error{
 	for i:=0; i < len(h.Potions); i++{
 		if h.Potions[i] == 0{
@@ -88,6 +91,7 @@ func (h *Hero) checkPotionCount() error{
 	return errors.New("max potions")
 }
 
+// Purchase potions for the hero
 func (h *Hero) PurchasePotion() error{
 	err:= h.checkPotionCount()
 	if err != nil{

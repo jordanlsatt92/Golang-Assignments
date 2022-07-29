@@ -1,5 +1,8 @@
 package main
 
+/*
+Write a program to check that a string contains only letters and numbers (e.g., a-z, A-Z, 0-9).
+*/
 import (
 	"fmt"
 	"regexp"

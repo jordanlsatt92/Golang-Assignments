@@ -5,6 +5,7 @@ import (
 	"time"
 )
 
+// generates and array of random numbers of size n
 func GenerateArray(n int) [] int{
 	var array = make([]int,0)
 	for i:=0; i < n; i++{

@@ -1,5 +1,8 @@
 package main
 
+/*
+Write a function that prompts the user for a year and checks if it is a leap year. The function should return True if the input is a leap year and False otherwise.
+*/
 import (
 	"fmt"
 )

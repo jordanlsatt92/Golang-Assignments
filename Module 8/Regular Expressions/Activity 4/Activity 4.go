@@ -1,5 +1,8 @@
 package main
 
+/*
+Write a program that finds all strings that include the letter i followed by one or two instances of the letter n.
+*/
 import (
 	"fmt"
 	"regexp"
