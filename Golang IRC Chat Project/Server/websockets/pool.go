@@ -40,6 +40,7 @@ func (pool *Pool) Start() {
 			for client := range pool.Clients {
 				client.Conn.WriteJSON("From " + pool.Name + ": " + departingClient.Username + " has left the channel...")
 			}
+			// Delete channel if all users have left and it is not the default channel
 			if pool.Name != "#default" && len(pool.Clients) == 0{
 				delete(Pools, pool.Name)
 				fmt.Println("All users have left", pool.Name)
