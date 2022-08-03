@@ -13,7 +13,7 @@ import (
 	"github.com/gorilla/websocket"
 )
 
-var addr = flag.String("addr", "localhost:8080", "http service address")
+// var addr = flag.String("addr", "localhost:8080", "http service address")
 
 func main(){
 	flag.Parse()
@@ -22,7 +22,16 @@ func main(){
 	interrupt := make(chan os.Signal, 1)
 	signal.Notify(interrupt, os.Interrupt)
 
-	u := url.URL{Scheme: "ws", Host: *addr, Path: "/"}
+	reader := bufio.NewReader(os.Stdin)
+	fmt.Println("Available server ports:\n8080\n8081\n8082")
+	fmt.Print("Please enter the desired port number from above: ")
+	input, err := reader.ReadString('\n')
+	if err != nil{
+		log.Fatal(err)
+	}
+	input = input[:len(input)-2]
+	fmt.Println([]byte(input))
+	u := url.URL{Scheme: "ws", Host: ":" + input, Path: "/"}
 	log.Printf("Connecting to %s\n", u.String())
 
 	c, _, err := websocket.DefaultDialer.Dial(u.String(), nil)
@@ -47,19 +56,15 @@ func main(){
 			log.Printf("%s", message)
 		}
 	}()
-
-	reader := bufio.NewReader(os.Stdin)
+	
 	fmt.Println("Enter your user name:")
-	input, err := reader.ReadString('\n')
+	input, err = reader.ReadString('\n')
 	if err != nil{
 		log.Fatal(err)
 	}
 	input = strings.TrimSuffix(input, "\n")
 	inputChan := make(chan string, 1)
 	inputChan <- string(input)
-
-
-
 
 	for {
 		select {
@@ -88,7 +93,7 @@ func main(){
 			}
 			return
 		}
-		input, err := reader.ReadString('\n')
+		input, err = reader.ReadString('\n')
 		if err != nil{
 			log.Fatal(err)
 		}

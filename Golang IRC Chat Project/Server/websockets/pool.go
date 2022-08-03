@@ -34,14 +34,18 @@ func (pool *Pool) Start() {
 
 				client.Conn.WriteJSON("From " + pool.Name + ": " + newClient.Username + " has joined the channel...")
 			}
-			break
 		case departingClient := <-pool.Unregister:
 			delete(pool.Clients, departingClient)
 			fmt.Println("Size of", pool.Name, ":", len(pool.Clients), " ", departingClient.Username, "disconnected...")
 			for client := range pool.Clients {
 				client.Conn.WriteJSON("From " + pool.Name + ": " + departingClient.Username + " has left the channel...")
 			}
-			break
+			if pool.Name != "#default" && len(pool.Clients) == 0{
+				delete(Pools, pool.Name)
+				fmt.Println("All users have left", pool.Name)
+				fmt.Println("Removing channel:", pool.Name)
+				return
+			}
 		case message := <-pool.Broadcast:
 			fmt.Println("Sending message to all clients in pool")
 			for client := range pool.Clients {

@@ -29,11 +29,15 @@ func RunClient(conn *websocket.Conn){
 	}
 
 	defer func(){
+		boolean := false
+		// Remove client from any channel they might be in and remove them from the Users map; allows the username to be reused
+		Quit(client, &boolean)
 		client.Conn.Close()
 	}()
 	// Get desired Username
 	err := conn.ReadJSON(&client.Username)
 	if err != nil{
+		fmt.Println("Print ", err.Error())
 		log.Fatal(err)
 	}
 	
@@ -61,9 +65,6 @@ func RunClient(conn *websocket.Conn){
 	defaultPool.Register <- client
 	client.Pools[defaultPool.Name] = defaultPool
 	conn.WriteJSON("From server: You have joined the channel " + defaultPool.Name)
-	// client.Read(defaultPool)
-	// pool.Register <- client
-	// client.Read()
 
 	keepReading := true
 	var message string
@@ -104,18 +105,20 @@ func ParseCommand(msg string, conn *websocket.Conn, client *Client, keepReading 
 		Create(str, client)
 	// Quit the chat program and disconnect from server
 	case "/quit":
-		Quit(str, client, keepReading)
+		Quit(client, keepReading)
 	// Display all channels
 	case "/channels":
-		GetChannels(str, client)
+		GetChannels(client)
 	// Display all users
 	case "/users":
-		GetUsers(str, client)
+		GetUsers(client)
 	// Display list of possible commands
 	case "/commands":
-		GetCommands(str, client)
+		GetCommands(client)
+	// Command sent by user is unrecognized; tell them to try another command
 	default:
 		conn.WriteJSON("From server: Command '" + commandType + "' unrecognized. Try another command.")
+		GetCommands(client)
 	}
 }
 
@@ -234,7 +237,7 @@ func Create(str []string, client *Client){
 }
 
 // Quit the chat program
-func Quit(str []string, client *Client, keepReading *bool){
+func Quit(client *Client, keepReading *bool){
 	for _, channel := range client.Pools{
 		channel.Unregister <- client
 	}
@@ -246,7 +249,7 @@ func Quit(str []string, client *Client, keepReading *bool){
 }
 
 // Display all channels
-func GetChannels(str []string, client *Client){
+func GetChannels(client *Client){
 	var channels string = `From server: ` + "\n" + `Channels:`
 	for _, channel := range Pools{
 		channels += "\n" + channel.Name  
@@ -255,7 +258,7 @@ func GetChannels(str []string, client *Client){
 }
 
 // Display all users
-func GetUsers(str []string, client *Client){
+func GetUsers(client *Client){
 	var users string = `From server: ` + "\n" + `Users:`
 	for _, user := range Users{
 		users += "\n" + user.Username  
@@ -264,7 +267,7 @@ func GetUsers(str []string, client *Client){
 }
 
 // Display all possible commands
-func GetCommands(str []string, client *Client){
+func GetCommands(client *Client){
 	var commands string = `From Server: ` + "\n" + `Available Commands`
 	commands += "\n/join <#channelname> : joins a channel"
 	commands += "\n/leave <#channelname> : leaves a channel"
